@@ -98,6 +98,26 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public List<StudentDto> searchByName(String name) {
-        return List.of();
+
+        List<StudentEntity> students = repository.findByNameContainingIgnoreCase(name);
+
+        List<StudentDto> studentDtoList = new ArrayList<>();
+
+        students.forEach(studentEntity -> {
+            StudentDto studentDto = new StudentDto();
+            studentDto.setId(studentEntity.getId());
+            studentDto.setName(studentEntity.getName());
+            studentDto.setAddress(studentEntity.getAddress());
+            studentDto.setAge(studentEntity.getAge());
+            studentDto.setClassRoom(studentEntity.getClassRoom());
+            studentDto.setGender(studentEntity.getGender());
+            studentDto.setSchoolId(studentEntity.getSchoolId());
+            studentDto.setPhone(studentEntity.getPhone());
+
+            studentDtoList.add(studentDto);
+        });
+
+        return studentDtoList;
     }
+
 }
