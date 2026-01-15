@@ -5,7 +5,10 @@ import edu.icet.entity.StudentEntity;
 import edu.icet.repository.StudentRepository;
 import edu.icet.service.StudentService;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.ModelMap;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,38 +19,28 @@ public class StudentServiceImpl implements StudentService {
 
     final StudentRepository repository;
 
-
-
+    @Autowired
+    ModelMapper mapper;
     @Override
     public void addStudent(StudentDto studentDto) {
-        StudentEntity studentEntity = new StudentEntity();
-
-        studentEntity.setName(studentDto.getName());
-        studentEntity.setAddress(studentDto.getAddress());
-        studentEntity.setAge(studentDto.getAge());
-        studentEntity.setClassRoom(studentDto.getClassRoom());
-        studentEntity.setGender(studentDto.getGender());
-        studentEntity.setSchoolId(studentDto.getSchoolId());
-        studentEntity.setPhone(studentDto.getPhone());
-
+        StudentEntity studentEntity = mapper.map(studentDto, StudentEntity.class);
         repository.save(studentEntity);
-
     }
 
     @Override
     public void updateStudent(StudentDto studentDto) {
-        StudentEntity studentEntity = new StudentEntity();
 
-        studentEntity.setId(studentDto.getId());
-        studentEntity.setName(studentDto.getName());
-        studentEntity.setAddress(studentDto.getAddress());
-        studentEntity.setAge(studentDto.getAge());
-        studentEntity.setClassRoom(studentDto.getClassRoom());
-        studentEntity.setGender(studentDto.getGender());
-        studentEntity.setSchoolId(studentDto.getSchoolId());
-        studentEntity.setPhone(studentDto.getPhone());
+        StudentEntity student = repository.findById(studentDto.getId()).get();
 
-        repository.save(studentEntity);
+        student.setName(studentDto.getName());
+        student.setAge(studentDto.getAge());
+        student.setGender(studentDto.getGender());
+        student.setAddress(studentDto.getAddress());
+        student.setClassRoom(studentDto.getClassRoom());
+        student.setPhone(studentDto.getPhone());
+        student.setSchoolId(studentDto.getSchoolId());
+
+        repository.save(student);
     }
 
     @Override
@@ -58,39 +51,18 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public StudentDto searchStudentById(Integer id) {
 
-        StudentDto studentDto = new StudentDto();
         StudentEntity studentEntity = repository.findById(id).get();
-
-        studentDto.setId(studentEntity.getId());
-        studentDto.setName(studentEntity.getName());
-        studentDto.setAddress(studentEntity.getAddress());
-        studentDto.setAge(studentEntity.getAge());
-        studentDto.setClassRoom(studentEntity.getClassRoom());
-        studentDto.setGender(studentEntity.getGender());
-        studentDto.setSchoolId(studentEntity.getSchoolId());
-        studentDto.setPhone(studentEntity.getPhone());
-
+        StudentDto studentDto = mapper.map(studentEntity, StudentDto.class);
         return studentDto;
-
-
-
     }
 
     @Override
     public List<StudentDto> getAll() {
         List<StudentEntity> all = repository.findAll();
         ArrayList<StudentDto> studentDtoArrayList = new ArrayList<>();
-        all.forEach(studentEntity -> {
-            StudentDto studentDto = new StudentDto();
-            studentDto.setId(studentEntity.getId());
-            studentDto.setName(studentEntity.getName());
-            studentDto.setAddress(studentEntity.getAddress());
-            studentDto.setAge(studentEntity.getAge());
-            studentDto.setClassRoom(studentEntity.getClassRoom());
-            studentDto.setGender(studentEntity.getGender());
-            studentDto.setSchoolId(studentEntity.getSchoolId());
-            studentDto.setPhone(studentEntity.getPhone());
 
+        all.forEach(studentEntity -> {
+            StudentDto studentDto = mapper.map(studentEntity, StudentDto.class);
             studentDtoArrayList.add(studentDto);
         });
         return studentDtoArrayList;
@@ -98,22 +70,11 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public List<StudentDto> searchByName(String name) {
-
         List<StudentEntity> students = repository.findByNameContainingIgnoreCase(name);
-
         List<StudentDto> studentDtoList = new ArrayList<>();
 
         students.forEach(studentEntity -> {
-            StudentDto studentDto = new StudentDto();
-            studentDto.setId(studentEntity.getId());
-            studentDto.setName(studentEntity.getName());
-            studentDto.setAddress(studentEntity.getAddress());
-            studentDto.setAge(studentEntity.getAge());
-            studentDto.setClassRoom(studentEntity.getClassRoom());
-            studentDto.setGender(studentEntity.getGender());
-            studentDto.setSchoolId(studentEntity.getSchoolId());
-            studentDto.setPhone(studentEntity.getPhone());
-
+            StudentDto studentDto = mapper.map(studentEntity, StudentDto.class);
             studentDtoList.add(studentDto);
         });
 
