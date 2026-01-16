@@ -52,8 +52,7 @@ public class StudentServiceImpl implements StudentService {
     public StudentDto searchStudentById(Integer id) {
 
         StudentEntity studentEntity = repository.findById(id).get();
-        StudentDto studentDto = mapper.map(studentEntity, StudentDto.class);
-        return studentDto;
+        return mapper.map(studentEntity, StudentDto.class);
     }
 
     @Override
