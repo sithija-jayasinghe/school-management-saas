@@ -29,17 +29,8 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public void updateStudent(StudentDto studentDto) {
-
         StudentEntity student = repository.findById(studentDto.getId()).get();
-
-        student.setName(studentDto.getName());
-        student.setAge(studentDto.getAge());
-        student.setGender(studentDto.getGender());
-        student.setAddress(studentDto.getAddress());
-        student.setClassRoom(studentDto.getClassRoom());
-        student.setPhone(studentDto.getPhone());
-        student.setSchoolId(studentDto.getSchoolId());
-
+        mapper.map(studentDto, student);
         repository.save(student);
     }
 

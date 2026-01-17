@@ -18,6 +18,7 @@ public class TeacherEntity {
     private Integer id;
     private Integer schoolId;
     private String name;
+    @Enumerated(EnumType.STRING)
     private Gender gender;
     private String phone;
     private String address;

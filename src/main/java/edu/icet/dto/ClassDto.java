@@ -1,21 +1,19 @@
 package edu.icet.dto;
 
-import edu.icet.util.Gender;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @ToString
-public class StudentDto {
+public class ClassDto {
     private Integer id;
     private Integer schoolId;
-    private String name;
-    private String address;
-    private String phone;
-    private int age;
-    private Gender gender;
+    private String grade;
+    private String section;
+    private String academicYear;
+    private Integer teacherId;
 }
